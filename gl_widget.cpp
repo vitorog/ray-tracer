@@ -2,23 +2,34 @@
 
 #include "gl_renderer.h"
 
-GlWidget::GlWidget(QWidget *parent) :
-    QGLWidget(parent)
+GlWidget::GlWidget(QWidget *parent) :    
+    QGLWidget(parent),
+    renderer_(NULL)
+{    
+}
+
+void GlWidget::SetRenderer(GlRenderer *r)
 {
+    renderer_ = r;
 }
 
 void GlWidget::initializeGL()
 {
-    GLContext context;
-    context.InitGL();
+    if(renderer_ != NULL){
+        renderer_->Initialize();
+    }
 }
 
-void GlWidget::updateGL()
+void GlWidget::paintGL()
 {
-    GlRenderer r;
-    r.Render();
+    if(renderer_ != NULL){
+        renderer_->Render();
+    }
 }
 
 void GlWidget::resizeGL(int w, int h)
 {
+    if(renderer_ != NULL){
+        renderer_->Resize(w,h);
+    }
 }

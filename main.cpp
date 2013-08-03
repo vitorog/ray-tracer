@@ -1,15 +1,13 @@
 #include <QApplication>
 #include <iostream>
 
-
-#include "gl_context.h"
-#include "gl_widget.h"
-
+#include "ray_tracer.h"
 
 int main(int argc, char** argv)
 {
     QApplication app(argc,argv);
-    GlWidget gl_widget;
-    gl_widget.show();
+    RayTracer ray_tracer;
+    ray_tracer.Initialize();
+    ray_tracer.CastRays();
     return app.exec();
 }
