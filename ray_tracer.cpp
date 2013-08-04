@@ -1,5 +1,7 @@
 #include "ray_tracer.h"
 
+#include <cmath>
+
 RayTracer::RayTracer()
     : gl_renderer_(NULL),
       gl_widget_(NULL),

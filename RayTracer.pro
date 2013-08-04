@@ -11,7 +11,11 @@ SOURCES += \
     ../shade-framework/shader_program.cpp \
     gl_widget.cpp \
     gl_renderer.cpp \
-    ray_tracer.cpp
+    ray_tracer.cpp \
+    ray.cpp \
+    scene.cpp \
+    ../shade-framework/vec3.cpp \
+    ../shade-framework/point3.cpp
 
 HEADERS += \
     ../shade-framework/debug.h \
@@ -19,7 +23,11 @@ HEADERS += \
     ../shade-framework/shader_program.h \
     gl_widget.h \
     gl_renderer.h \
-    ray_tracer.h
+    ray_tracer.h \
+    ray.h \
+    scene.h \
+    ../shade-framework/vec3.h \
+    ../shade-framework/point3.h
 
 OTHER_FILES += \
     basic.frag \

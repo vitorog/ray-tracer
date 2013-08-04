@@ -5,6 +5,8 @@
 #include "gl_renderer.h"
 #include "gl_widget.h"
 
+#include "scene.h"
+
 class RayTracer
 {
 public:
@@ -17,6 +19,7 @@ private:
     GlWidget *gl_widget_;
     int width_;
     int height_;
+    Scene test_scene_;
 };
 
 #endif // RAY_TRACER_H
