@@ -15,7 +15,8 @@ SOURCES += \
     ray.cpp \
     scene.cpp \
     ../shade-framework/vec3.cpp \
-    ../shade-framework/point3.cpp
+    ../shade-framework/point3.cpp \
+    sphere.cpp
 
 HEADERS += \
     ../shade-framework/debug.h \
@@ -27,7 +28,8 @@ HEADERS += \
     ray.h \
     scene.h \
     ../shade-framework/vec3.h \
-    ../shade-framework/point3.h
+    ../shade-framework/point3.h \
+    sphere.h
 
 OTHER_FILES += \
     basic.frag \
