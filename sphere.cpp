@@ -10,7 +10,7 @@ Sphere::Sphere(Point3 center, float radius) :
 
 bool Sphere::CheckCollision(Ray &ray)
 {
-    Vec3 oc = ray.origin_ - center_;
+    Vec3 oc = center_ - ray.origin_;
     //oc.Normalize();
     float c = oc.Dot(oc) - pow(radius_,2);
     float b = ray.direction_.Dot(oc);
@@ -26,7 +26,7 @@ bool Sphere::CheckCollision(Ray &ray)
         float t1 = - b + sqrt(delta);
         float t2 = - b + sqrt(delta);
         ray.collided_ = true;
-        float t = t1 < t2 ? t1 : t2;
+        float t = t1 > t2 ? t1 : t2;
         ray.collision_t_ = t;
         ray.collision_point_ = (ray.origin_ + (ray.direction_*t));
     }

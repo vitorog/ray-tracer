@@ -31,11 +31,22 @@ void RayTracer::Initialize()
 #include "sphere.h"
 #include "debug.h"
 
-void RayTracer::CastRays()
+
+Vec3 CalculatePhongLighting(Ray& r, Scene& scene)
 {
-    Sphere s(Point3(0,0,0.25),0.1);
-    GLubyte rgba_texture[height_][width_][4];
-    Point3 viewer(0,0,1);
+    Vec3 ambient_result = scene.sphere_.material_.ambient_
+            * scene.light_.material_.ambient_;
+    Vec3 diffuse_result = scene.sphere_.material_.diffuse_
+            * scene.light_.material_.diffuse_;
+    Vec3 specular_result = scene.sphere_.material_.specular_
+            * scene.light_.material_.specular_;
+    //TODO
+    return Vec3(1.0f,0.0f,0.0f);
+}
+
+void RayTracer::CastRays()
+{    
+    GLubyte rgba_texture[height_][width_][4];    
     float half_width = width_/2;
     float half_height = height_/2;
     for(int y=0;y<height_;y++){
@@ -43,14 +54,15 @@ void RayTracer::CastRays()
             float x_origin = (x - half_width)/half_width;
             float y_origin = (y - half_height)/half_height;
             Point3 current_pixel_pos(x_origin,y_origin,0);
-            Vec3 direction = current_pixel_pos - viewer;
+            Vec3 direction = current_pixel_pos - test_scene_.camera_.position_;
             direction.Normalize();
-            Ray r(viewer,direction);
-            bool collided = s.CheckCollision(r);
+            Ray r(test_scene_.camera_.position_,direction);
+            bool collided = test_scene_.TestSphereCollision(r);
             if(collided){
-                rgba_texture[y][x][0] = 255;
-                rgba_texture[y][x][1] = 0;
-                rgba_texture[y][x][2] = 0;
+                Vec3 final_color = CalculatePhongLighting(r,test_scene_);
+                rgba_texture[y][x][0] = 255*final_color.x_;
+                rgba_texture[y][x][1] = 255*final_color.y_;
+                rgba_texture[y][x][2] = 255*final_color.z_;
                 rgba_texture[y][x][3] = 255;
             }else{
                 rgba_texture[y][x][0] = 0;

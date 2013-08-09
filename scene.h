@@ -6,6 +6,9 @@
 #include "vec3.h"
 #include "point3.h"
 #include "ray.h"
+#include "sphere.h"
+#include "camera.h"
+#include "light.h"
 
 class Triangle{
 public:
@@ -19,10 +22,12 @@ class Scene
 {
 public:
     Scene();
-    std::vector<Triangle*> CheckRayCollision(const Ray&);
-    Point3 observer_pos_;
-    Point3 light_position_;
+    bool TestSphereCollision(Ray& );
+    std::vector<Triangle*> CheckRayCollision(const Ray&);   
     std::vector<Triangle> triangles_;
+    PointLight light_;
+    Sphere sphere_;
+    Camera camera_;
 };
 
 #endif // SCENE_H

@@ -16,7 +16,10 @@ SOURCES += \
     scene.cpp \
     ../shade-framework/vec3.cpp \
     ../shade-framework/point3.cpp \
-    sphere.cpp
+    sphere.cpp \
+    material.cpp \
+    camera.cpp \
+    light.cpp
 
 HEADERS += \
     ../shade-framework/debug.h \
@@ -29,7 +32,10 @@ HEADERS += \
     scene.h \
     ../shade-framework/vec3.h \
     ../shade-framework/point3.h \
-    sphere.h
+    sphere.h \
+    material.h \
+    camera.h \
+    light.h
 
 OTHER_FILES += \
     basic.frag \
