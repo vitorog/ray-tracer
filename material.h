@@ -10,6 +10,7 @@ public:
     Vec3 diffuse_;
     Vec3 specular_;
     Vec3 ambient_;
+    float shineness_;
 };
 
 #endif // MATERIAL_H

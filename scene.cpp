@@ -6,7 +6,7 @@ bool Triangle::CheckCollision(const Ray &ray)
 }
 
 Scene::Scene() :
-    sphere_(Point3(0.0,0.0,-20.0),5.0f)
+    sphere_(Point3(0.0,0.0,-200.0),5.0f)
 {   
 }
 
