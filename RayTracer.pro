@@ -19,7 +19,8 @@ SOURCES += \
     sphere.cpp \
     material.cpp \
     camera.cpp \
-    light.cpp
+    light.cpp \
+    ray_tracer_gui.cpp
 
 HEADERS += \
     ../shade-framework/debug.h \
@@ -35,8 +36,12 @@ HEADERS += \
     sphere.h \
     material.h \
     camera.h \
-    light.h
+    light.h \
+    ray_tracer_gui.h
 
 OTHER_FILES += \
     basic.frag \
     basic.vert
+
+FORMS += \
+    ray_tracer_gui.ui

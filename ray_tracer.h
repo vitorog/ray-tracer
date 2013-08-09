@@ -14,12 +14,12 @@ public:
     ~RayTracer();
     void Initialize();
     void CastRays();
+    GlWidget *gl_widget_;
+    Scene test_scene_;
 private:    
     GlRenderer *gl_renderer_;
-    GlWidget *gl_widget_;
     int width_;
     int height_;
-    Scene test_scene_;
 };
 
 #endif // RAY_TRACER_H
