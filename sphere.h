@@ -1,18 +1,18 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
+#include "object.h"
 #include "point3.h"
 #include "ray.h"
 #include "material.h"
 
-class Sphere
+class Sphere : public Object
 {
 public:
-    Sphere(Point3, float);
-    Point3 center_;
+    Sphere(Point3, float);    
     Material material_;
     float radius_;
-    bool CheckCollision(Ray&);
+    void CheckRayCollision(Ray&);
 };
 
 #endif // SPHERE_H

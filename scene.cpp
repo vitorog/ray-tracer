@@ -6,18 +6,18 @@ bool Triangle::CheckCollision(const Ray &ray)
 
 Scene::Scene()
 {   
-    Sphere *s1 = new Sphere(Point3(1.0,0.0,-5.0),1.0f);
-    Sphere *s2 = new Sphere(Point3(-1.0,0.0,-5.0),1.0f);
-    spheres_.push_back(s1);
-    spheres_.push_back(s2);
+    Object *s1 = new Sphere(Point3(1.0,0.0,-5.0),1.0f);
+    Object *s2 = new Sphere(Point3(-1.0,0.0,-5.0),1.0f);
+    objects_.push_back(s1);
+    objects_.push_back(s2);
 
 }
 
 void Scene::TestSphereCollision(Ray &ray)
 {
-    std::vector<Sphere*>::iterator it;
-    for(it = spheres_.begin(); it != spheres_.end(); it++){
-        (*it)->CheckCollision(ray);
+    std::vector<Object*>::iterator it;
+    for(it = objects_.begin(); it != objects_.end(); it++){
+        (*it)->CheckRayCollision(ray);
     }
 }
 

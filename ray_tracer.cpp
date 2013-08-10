@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "light.h"
+
 RayTracer::RayTracer()
     : gl_renderer_(NULL),
       gl_widget_(NULL),
@@ -32,20 +34,20 @@ void RayTracer::Initialize()
 #include "debug.h"
 
 
-Vec3 CalculatePhongLighting(Ray& ray, Scene& scene)
+Vec3 CalculatePhongLighting(Ray& ray, PointLight& light, Camera& camera, Material& material)
 {
-    Vec3 ambient_result = scene.spheres_[0]->material_.ambient_
-            * scene.light_.material_.ambient_;
-    Vec3 diffuse_result = scene.spheres_[0]->material_.diffuse_
-            * scene.light_.material_.diffuse_;
-    Vec3 specular_result = scene.spheres_[0]->material_.specular_
-            * scene.light_.material_.specular_;
+    Vec3 ambient_result = material.ambient_
+            * light.material_.ambient_;
+    Vec3 diffuse_result = material.diffuse_
+            * light.material_.diffuse_;
+    Vec3 specular_result = material.specular_
+            * light.material_.specular_;
     //TODO
-    Vec3 light_dir = scene.light_.position_ - ray.collision_point_ ;
+    Vec3 light_dir = light.position_ - ray.collision_point_ ;
     light_dir.Normalize();
     float NdotL = std::max(ray.collision_normal_.Dot(light_dir),0.0f);
 
-    Vec3 viewer_vec = scene.camera_.position_ - ray.collision_point_;
+    Vec3 viewer_vec = camera.position_ - ray.collision_point_;
     viewer_vec.Normalize();
 
     Vec3 reflection_vec = (ray.collision_normal_*(2*(light_dir.Dot(ray.collision_normal_)))) -
@@ -53,7 +55,7 @@ Vec3 CalculatePhongLighting(Ray& ray, Scene& scene)
     reflection_vec.Normalize();
 
     float RdotV = std::max(viewer_vec.Dot(reflection_vec),0.0f);
-    RdotV = pow(RdotV,scene.spheres_[0]->material_.shineness_);
+    RdotV = pow(RdotV,material.shineness_);
 
     Vec3 final_color = ambient_result + (diffuse_result*NdotL) + (specular_result*RdotV);
     final_color.x_ = std::min(final_color.x_,1.0f);
@@ -96,7 +98,7 @@ Vec3 RayTracer::CastRay(Point3 origin, Vec3 direction)
         if(shadow){
             return Vec3(0.0f,0.0f,0.0f);
         }else{
-            return CalculatePhongLighting(ray,test_scene_);
+            return CalculatePhongLighting(ray,test_scene_.light_,test_scene_.camera_,*ray.mat_ptr_);
         }
     }else{
         return Vec3(0.0f,0.0f,0.0f);

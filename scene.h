@@ -1,6 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include "object.h"
+
 #include <vector>
 
 #include "vec3.h"
@@ -26,7 +28,7 @@ public:
     std::vector<Triangle*> CheckRayCollision(const Ray&);   
     std::vector<Triangle> triangles_;
     PointLight light_;
-    std::vector<Sphere*> spheres_;
+    std::vector<Object*> objects_;
     Camera camera_;
 };
 
