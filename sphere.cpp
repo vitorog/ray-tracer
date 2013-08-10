@@ -33,9 +33,22 @@ bool Sphere::CheckCollision(Ray &ray)
             }
         }
         float t = t1 < t2 ? t1 : t2;
-        ray.collision_t_ = t;
-        ray.collision_point_ = ray.origin_ + (ray.direction_*t);
-        ray.collided_ = true;
+
+        if(!ray.collided_){
+            ray.collision_t_ = t;
+            ray.collision_point_ = ray.origin_ + (ray.direction_*t);
+            ray.collided_ = true;
+            ray.collision_normal_ = ray.collision_point_ - this->center_;
+            ray.collision_normal_.Normalize();
+        }else{
+            if( t < ray.collision_t_){
+                ray.collision_t_ = t;
+                ray.collision_point_ = ray.origin_ + (ray.direction_*t);
+                ray.collided_ = true;
+                ray.collision_normal_ = ray.collision_point_ - this->center_;
+                ray.collision_normal_.Normalize();
+            }
+        }
         return true;
     }
     return false;

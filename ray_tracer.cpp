@@ -34,28 +34,26 @@ void RayTracer::Initialize()
 
 Vec3 CalculatePhongLighting(Ray& ray, Scene& scene)
 {
-    Vec3 ambient_result = scene.sphere_.material_.ambient_
+    Vec3 ambient_result = scene.spheres_[0]->material_.ambient_
             * scene.light_.material_.ambient_;
-    Vec3 diffuse_result = scene.sphere_.material_.diffuse_
+    Vec3 diffuse_result = scene.spheres_[0]->material_.diffuse_
             * scene.light_.material_.diffuse_;
-    Vec3 specular_result = scene.sphere_.material_.specular_
+    Vec3 specular_result = scene.spheres_[0]->material_.specular_
             * scene.light_.material_.specular_;
     //TODO
-    Vec3 collision_normal = ray.collision_point_ - scene.sphere_.center_;
-    collision_normal.Normalize();
     Vec3 light_dir = scene.light_.position_ - ray.collision_point_ ;
     light_dir.Normalize();
-    float NdotL = std::max(collision_normal.Dot(light_dir),0.0f);
+    float NdotL = std::max(ray.collision_normal_.Dot(light_dir),0.0f);
 
     Vec3 viewer_vec = scene.camera_.position_ - ray.collision_point_;
     viewer_vec.Normalize();
 
-    Vec3 reflection_vec = (collision_normal*(2*(light_dir.Dot(collision_normal)))) -
+    Vec3 reflection_vec = (ray.collision_normal_*(2*(light_dir.Dot(ray.collision_normal_)))) -
             light_dir;
     reflection_vec.Normalize();
 
     float RdotV = std::max(viewer_vec.Dot(reflection_vec),0.0f);
-    RdotV = pow(RdotV,scene.sphere_.material_.shineness_);
+    RdotV = pow(RdotV,scene.spheres_[0]->material_.shineness_);
 
     Vec3 final_color = ambient_result + (diffuse_result*NdotL) + (specular_result*RdotV);
     final_color.x_ = std::min(final_color.x_,1.0f);
@@ -66,7 +64,7 @@ Vec3 CalculatePhongLighting(Ray& ray, Scene& scene)
 
 void RayTracer::CastRays()
 {    
-    GLubyte rgba_texture[height_][width_][4];    
+    GLubyte rgba_texture[height_][width_][4];
     for(int y=0;y<height_;y++){
         for(int x=0;x<width_;x++){
             float x_coordinate = x - (width_/2.0f);
@@ -76,21 +74,38 @@ void RayTracer::CastRays()
                     + test_scene_.camera_.v_ * pixel_coordinates.y_
                     - test_scene_.camera_.w_ * test_scene_.camera_.plane_distance_;
             ray_direction.Normalize();
-            Ray r(test_scene_.camera_.position_,ray_direction);
-            bool collided = test_scene_.TestSphereCollision(r);
-            if(collided){
-                Vec3 final_color = CalculatePhongLighting(r,test_scene_);
-                rgba_texture[y][x][0] = 255*final_color.x_;
-                rgba_texture[y][x][1] = 255*final_color.y_;
-                rgba_texture[y][x][2] = 255*final_color.z_;
-                rgba_texture[y][x][3] = 255;
-            }else{
-                rgba_texture[y][x][0] = 0;
-                rgba_texture[y][x][1] = 0;
-                rgba_texture[y][x][2] = 0;
-                rgba_texture[y][x][3] = 255;
-            }
+            Vec3 final_color = CastRay(test_scene_.camera_.position_,ray_direction);
+            rgba_texture[y][x][0] = 255*final_color.x_;
+            rgba_texture[y][x][1] = 255*final_color.y_;
+            rgba_texture[y][x][2] = 255*final_color.z_;
+            rgba_texture[y][x][3] = 255;
+
         }
     }
     gl_renderer_->SetTexture(&rgba_texture[0][0][0]);
+}
+
+Vec3 RayTracer::CastRay(Point3 origin, Vec3 direction)
+{
+    Ray ray(origin,direction);
+    test_scene_.TestSphereCollision(ray);
+    if(ray.collided_){
+        Vec3 point_light_dir = test_scene_.light_.position_ - ray.collision_point_;
+        point_light_dir.Normalize();
+        bool shadow = CastShadowRay(ray.collision_point_,point_light_dir);
+        if(shadow){
+            return Vec3(0.0f,0.0f,0.0f);
+        }else{
+            return CalculatePhongLighting(ray,test_scene_);
+        }
+    }else{
+        return Vec3(0.0f,0.0f,0.0f);
+    }
+}
+
+bool RayTracer::CastShadowRay(Point3 origin, Vec3 direction)
+{
+     Ray ray(origin,direction);
+     test_scene_.TestSphereCollision(ray);
+     return ray.collided_;
 }

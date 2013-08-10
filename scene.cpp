@@ -2,17 +2,23 @@
 
 bool Triangle::CheckCollision(const Ray &ray)
 {
-
 }
 
-Scene::Scene() :
-    sphere_(Point3(0.0,0.0,-200.0),5.0f)
+Scene::Scene()
 {   
+    Sphere *s1 = new Sphere(Point3(1.0,0.0,-5.0),1.0f);
+    Sphere *s2 = new Sphere(Point3(-1.0,0.0,-5.0),1.0f);
+    spheres_.push_back(s1);
+    spheres_.push_back(s2);
+
 }
 
-bool Scene::TestSphereCollision(Ray &ray)
+void Scene::TestSphereCollision(Ray &ray)
 {
-    return sphere_.CheckCollision(ray);
+    std::vector<Sphere*>::iterator it;
+    for(it = spheres_.begin(); it != spheres_.end(); it++){
+        (*it)->CheckCollision(ray);
+    }
 }
 
 std::vector<Triangle*> Scene::CheckRayCollision(const Ray &ray)
@@ -24,7 +30,6 @@ std::vector<Triangle*> Scene::CheckRayCollision(const Ray &ray)
         if((*it).CheckCollision(ray)){
             collided_triangles.push_back(&(*it));
         }
-
     }
     return collided_triangles;
 }

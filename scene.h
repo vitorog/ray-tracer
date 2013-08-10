@@ -22,11 +22,11 @@ class Scene
 {
 public:
     Scene();
-    bool TestSphereCollision(Ray& );
+    void TestSphereCollision(Ray& );
     std::vector<Triangle*> CheckRayCollision(const Ray&);   
     std::vector<Triangle> triangles_;
     PointLight light_;
-    Sphere sphere_;
+    std::vector<Sphere*> spheres_;
     Camera camera_;
 };
 

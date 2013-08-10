@@ -14,6 +14,8 @@ public:
     ~RayTracer();
     void Initialize();
     void CastRays();
+    Vec3 CastRay(Point3 origin, Vec3 direction);
+    bool CastShadowRay(Point3 origin, Vec3 direction);
     GlWidget *gl_widget_;
     Scene test_scene_;
 private:    

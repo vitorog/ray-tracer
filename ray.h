@@ -10,6 +10,7 @@ public:
     Ray(Point3 origin, Vec3 direction);
     Point3 origin_;
     Vec3 direction_;
+    Vec3 collision_normal_;
     float collision_t_;
     Point3 collision_point_;
     bool collided_;
