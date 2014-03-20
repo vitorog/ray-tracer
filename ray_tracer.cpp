@@ -25,6 +25,7 @@ RayTracer::~RayTracer()
 void RayTracer::Initialize()
 {
     gl_widget_ = new GlWidget();
+    gl_widget_->setFixedSize(width_,height_);
     gl_renderer_ = new GlRenderer(width_,height_);
     gl_widget_->SetRenderer(gl_renderer_);
     gl_widget_->show();

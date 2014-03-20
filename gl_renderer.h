@@ -1,8 +1,9 @@
 #ifndef GL_RENDERER_H
 #define GL_RENDERER_H
 
+#include <glm/gtc/matrix_transform.hpp>
 #include "gl_context.h"
-#include "glm/gtc/matrix_transform.hpp"
+
 
 #include "gl_widget.h"
 

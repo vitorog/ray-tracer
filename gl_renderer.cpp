@@ -18,12 +18,12 @@ bool GlRenderer::Initialize()
     initialized_ = gl_context_.InitGL();
     if(initialized_){
         shaders_ = new ShaderProgram();
-        if(shaders_->CompileShaderFromFile("/media/vitor/Vitor/Development/Projects/Github/RayTracer/basic.vert", kVertexShader)){
+        if(shaders_->CompileShaderFromFile("../../RayTracer/basic.vert", kVertexShader)){
             DEBUG_MESSAGE("basic.vert loaded successfully.");
         }else{
             DEBUG_MESSAGE("Failed to load vertex shader.");
         }
-        if(shaders_->CompileShaderFromFile("/media/vitor/Vitor/Development/Projects/Github/RayTracer/basic.frag", kFragmentShader)){
+        if(shaders_->CompileShaderFromFile("../../RayTracer/basic.frag", kFragmentShader)){
             DEBUG_MESSAGE("basic.frag loaded successfully.");
         }else{
             DEBUG_MESSAGE("Failed to load frag shader.");
@@ -120,7 +120,6 @@ void GlRenderer::Resize(int w, int h)
 
     projection_matrix_ = glm::ortho(0.0f,(float)width_, 0.0f, (float)height_);
     view_matrix_ = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f));
-    model_matrix_location_ = glGetUniformLocation(shaders_->GetHandle(), "model_matrix");
 }
 
 void GlRenderer::SetTexture(GLubyte *rgba_texture)

@@ -1,7 +1,7 @@
 QT += opengl
 
-INCLUDEPATH += /media/vitor/Vitor/Development/Projects/Github/shade-framework  #fix hard coded path
-INCLUDEPATH += /home/vitor/glm/glm-0.9.4.3 #fix hard coded path
+INCLUDEPATH += ../shade-framework
+INCLUDEPATH += ../../../glm-0.9.5.2/glm
 
 LIBS += -lGLEW
 

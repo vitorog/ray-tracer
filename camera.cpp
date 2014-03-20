@@ -3,7 +3,7 @@
 #include <cmath>
 
 Camera::Camera() :
-    position_(0.0,0.0,10.0),
+    position_(0.0,0.0,20.0),
     view_direction_(0.0,0.0,-1.0),
     up_direction_(0.0,1.0,0.0)
 {

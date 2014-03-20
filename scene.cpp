@@ -2,6 +2,7 @@
 
 bool Triangle::CheckCollision(const Ray &ray)
 {
+    return false;
 }
 
 Scene::Scene()
