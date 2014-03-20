@@ -5,10 +5,11 @@
 #include "light.h"
 
 RayTracer::RayTracer()
-    : gl_renderer_(NULL),
-      gl_widget_(NULL),
+    :gl_widget_(NULL),
+     gl_renderer_(NULL),
       width_(640),
-      height_(640)
+      height_(640),
+      max_depth_(1)
 {
 }
 
@@ -68,6 +69,7 @@ Vec3 CalculatePhongLighting(Ray& ray, PointLight& light, Camera& camera, Materia
 void RayTracer::CastRays()
 {    
     GLubyte rgba_texture[height_][width_][4];
+    int depth = 1;
     for(int y=0;y<height_;y++){
         for(int x=0;x<width_;x++){
             float x_coordinate = x - (width_/2.0f);
@@ -77,7 +79,7 @@ void RayTracer::CastRays()
                     + test_scene_.camera_.v_ * pixel_coordinates.y_
                     - test_scene_.camera_.w_ * test_scene_.camera_.plane_distance_;
             ray_direction.Normalize();
-            Vec3 final_color = CastRay(test_scene_.camera_.position_,ray_direction);
+            Vec3 final_color = CastRay(test_scene_.camera_.position_,ray_direction, depth);
             rgba_texture[y][x][0] = 255*final_color.x_;
             rgba_texture[y][x][1] = 255*final_color.y_;
             rgba_texture[y][x][2] = 255*final_color.z_;
@@ -88,7 +90,7 @@ void RayTracer::CastRays()
     gl_renderer_->SetTexture(&rgba_texture[0][0][0]);
 }
 
-Vec3 RayTracer::CastRay(Point3 origin, Vec3 direction)
+Vec3 RayTracer::CastRay(Point3 origin, Vec3 direction, int depth)
 {
     Ray ray(origin,direction);
     test_scene_.TestSphereCollision(ray);
@@ -99,7 +101,15 @@ Vec3 RayTracer::CastRay(Point3 origin, Vec3 direction)
         if(shadow){
             return Vec3(0.0f,0.0f,0.0f);
         }else{
-            return CalculatePhongLighting(ray,test_scene_.light_,test_scene_.camera_,*ray.mat_ptr_);
+            if(depth < max_depth_){
+                float c1 = (-1)*ray.collision_normal_.Dot(ray.direction_);
+                Vec3 reflected_ray_dir = ray.direction_ + (ray.collision_normal_ * c1 * 2);
+                Point3 reflected_ray_pos = ray.collision_point_;
+                return CalculatePhongLighting(ray,test_scene_.light_,test_scene_.camera_,*ray.mat_ptr_)
+                        + CastRay(reflected_ray_pos,reflected_ray_dir, depth + 1);
+            }else{
+                return CalculatePhongLighting(ray,test_scene_.light_,test_scene_.camera_,*ray.mat_ptr_);
+            }
         }
     }else{
         return Vec3(0.0f,0.0f,0.0f);

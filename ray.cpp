@@ -2,9 +2,9 @@
 
 Ray::Ray(Point3 origin, Vec3 direction) :
     origin_(origin),
-    direction_(direction),
-    collided_(false),
+    direction_(direction),    
+    collision_t_(0),
     collision_point_(Point3()),
-    collision_t_(0)
+    collided_(false)
 {
 }

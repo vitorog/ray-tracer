@@ -1,6 +1,8 @@
 #include <QApplication>
 #include <iostream>
 
+
+
 #include "ray_tracer.h"
 
 int main(int argc, char** argv)

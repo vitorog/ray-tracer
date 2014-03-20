@@ -1,6 +1,7 @@
 #ifndef GL_RENDERER_H
 #define GL_RENDERER_H
 
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 #include "gl_context.h"
 
