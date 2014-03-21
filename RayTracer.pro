@@ -6,36 +6,25 @@ INCLUDEPATH += ../../../glm-0.9.5.2/glm
 LIBS += -lGLEW
 
 SOURCES += \
-    main.cpp \
-    ../shade-framework/gl_context.cpp \
-    ../shade-framework/shader_program.cpp \
+    main.cpp \    
     gl_widget.cpp \
     gl_renderer.cpp \
     ray_tracer.cpp \
     ray.cpp \
-    scene.cpp \
-    ../shade-framework/vec3.cpp \
-    ../shade-framework/point3.cpp \
-    sphere.cpp \
-    material.cpp \
+    scene.cpp \   
+    sphere.cpp \    
     camera.cpp \
     light.cpp \
     ray_tracer_gui.cpp \
     object.cpp
 
-HEADERS += \
-    ../shade-framework/debug.h \
-    ../shade-framework/gl_context.h \
-    ../shade-framework/shader_program.h \
+HEADERS += \   
     gl_widget.h \
     gl_renderer.h \
     ray_tracer.h \
     ray.h \
-    scene.h \
-    ../shade-framework/vec3.h \
-    ../shade-framework/point3.h \
-    sphere.h \
-    material.h \
+    scene.h \    
+    sphere.h \    
     camera.h \
     light.h \
     ray_tracer_gui.h \
@@ -47,3 +36,9 @@ OTHER_FILES += \
 
 FORMS += \
     ray_tracer_gui.ui
+
+
+unix:!macx: LIBS += -L$$PWD/../Builds/shade-framework-build/ -lshade-framework
+
+INCLUDEPATH += $$PWD/../Builds/shade-framework-build
+DEPENDPATH += $$PWD/../Builds/shade-framework-build

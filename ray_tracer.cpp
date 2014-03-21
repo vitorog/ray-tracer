@@ -36,14 +36,14 @@ void RayTracer::Initialize()
 #include "debug.h"
 
 
-Vec3 CalculatePhongLighting(Ray& ray, PointLight& light, Camera& camera, Material& material)
+glm::vec3 CalculatePhongLighting(Ray& ray, PointLight& light, Camera& camera, Material& material)
 {
-    Vec3 ambient_result = material.ambient_
-            * light.material_.ambient_;
-    Vec3 diffuse_result = material.diffuse_
-            * light.material_.diffuse_;
-    Vec3 specular_result = material.specular_
-            * light.material_.specular_;
+    glm::vec3 ka_result = material.ka_
+            * light.material_.ka_;
+    glm::vec3 kd_result = material.kd_
+            * light.material_.kd_;
+    glm::vec3 ks_result = material.ks_
+            * light.material_.ks_;
     //TODO
     Vec3 light_dir = light.position_ - ray.collision_point_ ;
     light_dir.Normalize();
@@ -57,12 +57,12 @@ Vec3 CalculatePhongLighting(Ray& ray, PointLight& light, Camera& camera, Materia
     reflection_vec.Normalize();
 
     float RdotV = std::max(viewer_vec.Dot(reflection_vec),0.0f);
-    RdotV = pow(RdotV,material.shineness_);
+    RdotV = pow(RdotV,material.ns_);
 
-    Vec3 final_color = ambient_result + (diffuse_result*NdotL) + (specular_result*RdotV);
-    final_color.x_ = std::min(final_color.x_,1.0f);
-    final_color.y_ = std::min(final_color.y_,1.0f);
-    final_color.z_ = std::min(final_color.z_,1.0f);
+    glm::vec3 final_color = ka_result + (kd_result*NdotL) + (ks_result*RdotV);
+    final_color.x = std::min(final_color.x,1.0f);
+    final_color.y = std::min(final_color.y,1.0f);
+    final_color.z = std::min(final_color.z,1.0f);
     return final_color;
 }
 
@@ -79,10 +79,10 @@ void RayTracer::CastRays()
                     + test_scene_.camera_.v_ * pixel_coordinates.y_
                     - test_scene_.camera_.w_ * test_scene_.camera_.plane_distance_;
             ray_direction.Normalize();
-            Vec3 final_color = CastRay(test_scene_.camera_.position_,ray_direction, depth);
-            rgba_texture[y][x][0] = 255*final_color.x_;
-            rgba_texture[y][x][1] = 255*final_color.y_;
-            rgba_texture[y][x][2] = 255*final_color.z_;
+            glm::vec3 final_color = CastRay(test_scene_.camera_.position_,ray_direction, depth);
+            rgba_texture[y][x][0] = 255*final_color.x;
+            rgba_texture[y][x][1] = 255*final_color.y;
+            rgba_texture[y][x][2] = 255*final_color.z;
             rgba_texture[y][x][3] = 255;
 
         }
@@ -90,7 +90,7 @@ void RayTracer::CastRays()
     gl_renderer_->SetTexture(&rgba_texture[0][0][0]);
 }
 
-Vec3 RayTracer::CastRay(Point3 origin, Vec3 direction, int depth)
+glm::vec3 RayTracer::CastRay(Point3 origin, Vec3 direction, int depth)
 {
     Ray ray(origin,direction);
     test_scene_.TestSphereCollision(ray);
@@ -99,7 +99,7 @@ Vec3 RayTracer::CastRay(Point3 origin, Vec3 direction, int depth)
         point_light_dir.Normalize();
         bool shadow = CastShadowRay(ray.collision_point_,point_light_dir);
         if(shadow){
-            return Vec3(0.0f,0.0f,0.0f);
+            return glm::vec3(0.0f,0.0f,0.0f);
         }else{
             if(depth < max_depth_){
                 float c1 = (-1)*ray.collision_normal_.Dot(ray.direction_);
@@ -112,7 +112,7 @@ Vec3 RayTracer::CastRay(Point3 origin, Vec3 direction, int depth)
             }
         }
     }else{
-        return Vec3(0.0f,0.0f,0.0f);
+        return glm::vec3(0.0f,0.0f,0.0f);
     }
 }
 

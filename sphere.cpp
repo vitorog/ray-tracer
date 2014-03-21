@@ -1,6 +1,7 @@
 #include "sphere.h"
 
 #include <cmath>
+#include <glm/glm.hpp>
 
 Sphere::Sphere(Point3 center, float radius) :
     Object(center),
@@ -10,7 +11,7 @@ Sphere::Sphere(Point3 center, float radius) :
 
 void Sphere::CheckRayCollision(Ray &ray)
 {
-    Vec3 oc = ray.origin_ - position_;
+    Vec3 oc = ray.origin_ - position_;    
     float A = ray.direction_.Dot(ray.direction_);
     float B = 2*(ray.direction_.Dot(oc));
     float C = (oc.Dot(oc)) - pow(radius_,2);
