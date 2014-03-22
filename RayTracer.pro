@@ -1,9 +1,7 @@
 QT += opengl
 
 INCLUDEPATH += ../shade-framework
-INCLUDEPATH += ../../../glm-0.9.5.2/glm
-
-LIBS += -lGLEW
+INCLUDEPATH += ../../../Libs/glm-0.9.5.2/glm
 
 SOURCES += \
     main.cpp \    
@@ -39,6 +37,18 @@ FORMS += \
 
 
 unix:!macx: LIBS += -L$$PWD/../Builds/shade-framework-build/ -lshade-framework
+unix: LIBS += -lGLEW
+
+INCLUDEPATH += $$PWD/../Builds/shade-framework-build
+DEPENDPATH += $$PWD/../Builds/shade-framework-build
+
+win32: LIBS += -L$$PWD/../../../Libs/glew-1.10.0_mingw/lib/ -llibglew32
+
+INCLUDEPATH += $$PWD/../../../Libs/glew-1.10.0_mingw/include
+DEPENDPATH += $$PWD/../../../Libs/glew-1.10.0_mingw/include
+
+
+win32: LIBS += -L$$PWD/../Builds/shade-framework-build/ -llibshade-framework
 
 INCLUDEPATH += $$PWD/../Builds/shade-framework-build
 DEPENDPATH += $$PWD/../Builds/shade-framework-build

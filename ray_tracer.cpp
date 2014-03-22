@@ -9,8 +9,8 @@ RayTracer::RayTracer()
      gl_renderer_(NULL),
       width_(640),
       height_(640),
-      max_depth_(1),
-      test_scene_("test.obj")
+      max_depth_(1)
+//      test_scene_("test.obj")
 {
 }
 
@@ -94,9 +94,10 @@ void RayTracer::CastRays()
 glm::vec3 RayTracer::CastRay(Point3 origin, Vec3 direction, int depth)
 {
     Ray ray(origin,direction);
-    test_scene_.CheckRayCollision(ray);
+//    test_scene_.CheckRayCollision(ray);
+    test_scene_.TestSphereCollision(ray);
     if(ray.collided_){
-        return glm::vec3(1.0f,0.0f,0.0f);
+//        return glm::vec3(1.0f,0.0f,0.0f);
         Vec3 point_light_dir = test_scene_.light_.position_ - ray.collision_point_;
         point_light_dir.Normalize();
         bool shadow = CastShadowRay(ray.collision_point_,point_light_dir);
