@@ -1,6 +1,6 @@
 #include "scene.h"
 
-#include "../shade-framework/model.h"
+#include "../shade-framework/scene_loader.h"
 
 bool Triangle::CheckCollision(Ray &ray)
 {
@@ -25,7 +25,7 @@ Scene::Scene()
 
 Scene::Scene(std::string scene_path)
 {
-    Model m;
+    SceneLoader m;
     m.Load(scene_path);
     for(int i = 0; i < m.vertices_index_.size(); i+= 3)
     {

@@ -2,7 +2,7 @@
 #define SCENE_H
 
 #include <vector>
-#include "../shade-framework/model.h"
+#include "../shade-framework/scene_loader.h"
 
 #include "object.h"
 #include "vec3.h"
@@ -32,7 +32,7 @@ public:
     PointLight light_;
     std::vector<Object*> objects_;
     Camera camera_;
-    Model scene_model_;
+    SceneLoader loader_;
 };
 
 #endif // SCENE_H
