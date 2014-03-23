@@ -16,8 +16,8 @@ bool Triangle::CheckCollision(Ray &ray)
 
 Scene::Scene()
 {   
-    Object *s1 = new Sphere(Point3(1.0,0.0,-5.0),1.0f);
-    Object *s2 = new Sphere(Point3(-1.0,0.0,-5.0),1.0f);
+    Object *s1 = new Sphere(glm::vec3(1.0,0.0,-15.0),1.0f);
+    Object *s2 = new Sphere(glm::vec3(-1.0,0.0,-15.0),1.0f);
     objects_.push_back(s1);
     objects_.push_back(s2);
 
@@ -25,28 +25,28 @@ Scene::Scene()
 
 Scene::Scene(std::string scene_path)
 {
-    SceneLoader m;
-    m.Load(scene_path);
-    for(int i = 0; i < m.vertices_index_.size(); i+= 3)
-    {
-        Triangle *t = new Triangle();
-        t->a.x_ = m.vertices_[m.vertices_index_[i]].x;
-        t->a.y_ = m.vertices_[m.vertices_index_[i]].y;
-        t->a.z_ = m.vertices_[m.vertices_index_[i]].z;
+//    SceneLoader m;
+//    m.Load(scene_path);
+//    for(int i = 0; i < m.vertices_index_.size(); i+= 3)
+//    {
+//        Triangle *t = new Triangle();
+//        t->a.x_ = m.vertices_[m.vertices_index_[i]].x;
+//        t->a.y_ = m.vertices_[m.vertices_index_[i]].y;
+//        t->a.z_ = m.vertices_[m.vertices_index_[i]].z;
 
-        t->b.x_ = m.vertices_[m.vertices_index_[i+1]].x;
-        t->b.y_ = m.vertices_[m.vertices_index_[i+1]].y;
-        t->b.z_ = m.vertices_[m.vertices_index_[i+1]].z;
+//        t->b.x_ = m.vertices_[m.vertices_index_[i+1]].x;
+//        t->b.y_ = m.vertices_[m.vertices_index_[i+1]].y;
+//        t->b.z_ = m.vertices_[m.vertices_index_[i+1]].z;
 
-        t->c.x_ = m.vertices_[m.vertices_index_[i+2]].x;
-        t->c.y_ = m.vertices_[m.vertices_index_[i+2]].y;
-        t->c.z_ = m.vertices_[m.vertices_index_[i+2]].z;
+//        t->c.x_ = m.vertices_[m.vertices_index_[i+2]].x;
+//        t->c.y_ = m.vertices_[m.vertices_index_[i+2]].y;
+//        t->c.z_ = m.vertices_[m.vertices_index_[i+2]].z;
 
-        Vec3 ba = t->b - t->a;
-        Vec3 ca = t->c - t->a;
-        t->normal = ba.Cross(ca);
-        triangles_.push_back(t);
-    }
+//        glm::vec3 ba = t->b - t->a;
+//        glm::vec3 ca = t->c - t->a;
+//        t->normal = ba.Cross(ca);
+//        triangles_.push_back(t);
+//    }
 }
 
 void Scene::TestSphereCollision(Ray &ray)

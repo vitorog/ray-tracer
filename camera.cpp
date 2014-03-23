@@ -1,20 +1,17 @@
 #include "camera.h"
 
 #include <cmath>
+#include <glm/vec3.hpp>
+#include <glm/geometric.hpp>
 
 Camera::Camera() :
-    position_(0.0,0.0,20.0),
+    position_(0.0,0.0,10.0),
     view_direction_(0.0,0.0,-1.0),
     up_direction_(0.0,1.0,0.0)
 {
-    w_ = view_direction_ * (-1);
-    u_ = view_direction_.Cross(up_direction_);
-    v_ = view_direction_.Cross(u_);
-
-    view_direction_.Normalize();
-    w_.Normalize();
-    u_.Normalize();
-    v_.Normalize();
+    w_ = glm::normalize(view_direction_ * (-1.0f));
+    u_ = glm::normalize(glm::cross(view_direction_,up_direction_));
+    v_ = glm::normalize(glm::cross(u_, view_direction_));
 
     left_ = -1.0f;
     right_ = 1.0f;
@@ -26,7 +23,7 @@ Camera::Camera() :
     fov_x_ = 45.0f;
     fov_y_ = 45.0f;
 
-//    fov_x_ = 90.0f;
+//    fov_x_ = 180.0f;
 //    fov_y_ = 90.0f;
 //    float half_fov_x = fov_x_ / 2.0f;
 //    float half_fov_y = fov_y_ / 2.0f;
@@ -36,9 +33,9 @@ Camera::Camera() :
 //    bottom_ = - tan(half_fov_y)*plane_distance_;
 }
 
-Point3 Camera::GetPixelCoordinates(int i, int j)
+glm::vec3 Camera::GetPixelCoordinates(int i, int j)
 {
     float u = ((left_ + (right_ - left_)*(i+0.5)) / num_x_);
     float v = ((bottom_ + (top_ - bottom_)*(j+0.5)) / num_y_);
-    return Point3(u,v,0);
+    return glm::vec3(u,v,0);
 }

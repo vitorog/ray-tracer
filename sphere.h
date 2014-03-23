@@ -9,7 +9,7 @@
 class Sphere : public Object
 {
 public:
-    Sphere(Point3, float);    
+    Sphere(glm::vec3, float);    
     Material material_;
     float radius_;
     void CheckRayCollision(Ray&);

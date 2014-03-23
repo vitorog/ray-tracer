@@ -4,6 +4,10 @@
 
 #include "light.h"
 
+#include "vec3.h"
+
+#include "glm/vec3.hpp"
+
 RayTracer::RayTracer()
     :gl_widget_(NULL),
      gl_renderer_(NULL),
@@ -45,20 +49,20 @@ glm::vec3 CalculatePhongLighting(Ray& ray, PointLight& light, Camera& camera, Ma
             * light.material_.kd_;
     glm::vec3 ks_result = material.ks_
             * light.material_.ks_;
-    //TODO
-    Vec3 light_dir = light.position_ - ray.collision_point_ ;
-    light_dir.Normalize();
-    float NdotL = std::max(ray.collision_normal_.Dot(light_dir),0.0f);
 
-    Vec3 viewer_vec = camera.position_ - ray.collision_point_;
-    viewer_vec.Normalize();
+    //TOD
 
-    Vec3 reflection_vec = (ray.collision_normal_*(2*(light_dir.Dot(ray.collision_normal_)))) -
-            light_dir;
-    reflection_vec.Normalize();
+    glm::vec3 light_dir = glm::normalize(light.position_ - ray.collision_point_);
 
-    float RdotV = std::max(viewer_vec.Dot(reflection_vec),0.0f);
-    RdotV = pow(RdotV,material.ns_);
+    float NdotL = std::max(glm::dot(ray.collision_normal_,light_dir),0.0f);
+
+    glm::vec3 viewer_vec = glm::normalize(camera.position_ - ray.collision_point_);
+
+
+    glm::vec3 reflection_vec = glm::normalize(ray.collision_normal_*(2*(glm::dot(light_dir,ray.collision_normal_))) -
+            light_dir);
+
+    float RdotV = pow(std::max(glm::dot(viewer_vec,reflection_vec),0.0f), material.ns_);
 
     glm::vec3 final_color = ka_result + (kd_result*NdotL) + (ks_result*RdotV);
     final_color.x = std::min(final_color.x,1.0f);
@@ -75,11 +79,10 @@ void RayTracer::CastRays()
         for(int x=0;x<width_;x++){
             float x_coordinate = x - (width_/2.0f);
             float y_coordinate = y - (height_/2.0f);
-            Point3 pixel_coordinates = test_scene_.camera_.GetPixelCoordinates(x_coordinate,y_coordinate);
-            Vec3 ray_direction = test_scene_.camera_.u_*pixel_coordinates.x_
-                    + test_scene_.camera_.v_ * pixel_coordinates.y_
-                    - test_scene_.camera_.w_ * test_scene_.camera_.plane_distance_;
-            ray_direction.Normalize();
+            glm::vec3 pixel_coordinates = test_scene_.camera_.GetPixelCoordinates(x_coordinate,y_coordinate);
+            glm::vec3 ray_direction = glm::normalize(test_scene_.camera_.u_*pixel_coordinates.x
+                    + test_scene_.camera_.v_ * pixel_coordinates.y
+                    - test_scene_.camera_.w_ * test_scene_.camera_.plane_distance_);
             glm::vec3 final_color = CastRay(test_scene_.camera_.position_,ray_direction, depth);
             rgba_texture[y][x][0] = 255*final_color.x;
             rgba_texture[y][x][1] = 255*final_color.y;
@@ -91,23 +94,22 @@ void RayTracer::CastRays()
     gl_renderer_->SetTexture(&rgba_texture[0][0][0]);
 }
 
-glm::vec3 RayTracer::CastRay(Point3 origin, Vec3 direction, int depth)
+glm::vec3 RayTracer::CastRay(glm::vec3 origin, glm::vec3 direction, int depth)
 {
     Ray ray(origin,direction);
 //    test_scene_.CheckRayCollision(ray);
     test_scene_.TestSphereCollision(ray);
     if(ray.collided_){
 //        return glm::vec3(1.0f,0.0f,0.0f);
-        Vec3 point_light_dir = test_scene_.light_.position_ - ray.collision_point_;
-        point_light_dir.Normalize();
+        glm::vec3 point_light_dir = glm::normalize(test_scene_.light_.position_ - ray.collision_point_);
         bool shadow = CastShadowRay(ray.collision_point_,point_light_dir);
         if(shadow){
             return glm::vec3(0.0f,0.0f,0.0f);
         }else{
             if(depth < max_depth_){
-                float c1 = (-1)*ray.collision_normal_.Dot(ray.direction_);
-                Vec3 reflected_ray_dir = ray.direction_ + (ray.collision_normal_ * c1 * 2);
-                Point3 reflected_ray_pos = ray.collision_point_;
+                float c1 = (-1)*glm::dot(ray.collision_normal_,ray.direction_);
+                glm::vec3 reflected_ray_dir = ray.direction_ + (ray.collision_normal_ * c1 * 2.0f);
+                glm::vec3 reflected_ray_pos = ray.collision_point_;
                 return CalculatePhongLighting(ray,test_scene_.light_,test_scene_.camera_,*ray.mat_ptr_)
                         + CastRay(reflected_ray_pos,reflected_ray_dir, depth + 1);
             }else{
@@ -119,7 +121,7 @@ glm::vec3 RayTracer::CastRay(Point3 origin, Vec3 direction, int depth)
     }
 }
 
-bool RayTracer::CastShadowRay(Point3 origin, Vec3 direction)
+bool RayTracer::CastShadowRay(glm::vec3 origin, glm::vec3 direction)
 {
      Ray ray(origin,direction);
      test_scene_.TestSphereCollision(ray);

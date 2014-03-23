@@ -14,10 +14,10 @@
 
 class Triangle{
 public:
-    Point3 a;
-    Point3 b;
-    Point3 c;
-    Vec3 normal;
+    glm::vec3 a;
+    glm::vec3 b;
+    glm::vec3 c;
+    glm::vec3 normal;
     bool CheckCollision(Ray&);
 };
 

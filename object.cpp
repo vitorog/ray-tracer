@@ -1,6 +1,6 @@
 #include "object.h"
 
-Object::Object(Point3 position) :
+Object::Object(glm::vec3 position) :
     position_(position)
 {
 }

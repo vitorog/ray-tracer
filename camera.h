@@ -1,20 +1,23 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <glm/vec3.hpp>
+
 #include "vec3.h"
 #include "point3.h"
+
 
 class Camera
 {
 public:
     Camera();
-    Point3 GetPixelCoordinates(int i,int j);
-    Point3 position_;
-    Vec3 view_direction_;
-    Vec3 up_direction_;
-    Vec3 u_;
-    Vec3 v_;
-    Vec3 w_;
+    glm::vec3 GetPixelCoordinates(int i,int j);
+    glm::vec3 position_;
+    glm::vec3 view_direction_;
+    glm::vec3 up_direction_;
+    glm::vec3 u_;
+    glm::vec3 v_;
+    glm::vec3 w_;
     float left_;
     float right_;
     float top_;

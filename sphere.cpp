@@ -3,7 +3,7 @@
 #include <cmath>
 #include <glm/glm.hpp>
 
-Sphere::Sphere(Point3 center, float radius) :
+Sphere::Sphere(glm::vec3 center, float radius) :
     Object(center),
     radius_(radius)
 {
@@ -11,10 +11,10 @@ Sphere::Sphere(Point3 center, float radius) :
 
 void Sphere::CheckRayCollision(Ray &ray)
 {
-    Vec3 oc = ray.origin_ - position_;    
-    float A = ray.direction_.Dot(ray.direction_);
-    float B = 2*(ray.direction_.Dot(oc));
-    float C = (oc.Dot(oc)) - pow(radius_,2);
+    glm::vec3 oc = ray.origin_ - position_;
+    float A = glm::dot(ray.direction_, ray.direction_);
+    float B = 2*(glm::dot(ray.direction_, oc));
+    float C = (glm::dot(oc,oc)) - pow(radius_,2);
 
     float delta = pow(B,2) - 4*A*C;
     if(delta >= 0){
@@ -39,16 +39,14 @@ void Sphere::CheckRayCollision(Ray &ray)
             ray.collision_t_ = t;
             ray.collision_point_ = ray.origin_ + (ray.direction_*t);
             ray.collided_ = true;
-            ray.collision_normal_ = ray.collision_point_ - this->position_;
-            ray.collision_normal_.Normalize();
+            ray.collision_normal_ = glm::normalize(ray.collision_point_ - this->position_);
             ray.mat_ptr_ = &this->material_;
         }else{
             if( t < ray.collision_t_){
                 ray.collision_t_ = t;
                 ray.collision_point_ = ray.origin_ + (ray.direction_*t);
                 ray.collided_ = true;
-                ray.collision_normal_ = ray.collision_point_ - this->position_;
-                ray.collision_normal_.Normalize();
+                ray.collision_normal_ = glm::normalize(ray.collision_point_ - this->position_);
                 ray.mat_ptr_ = &this->material_;
             }
         }

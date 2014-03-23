@@ -49,6 +49,3 @@ DEPENDPATH += $$PWD/../../../Libs/glew-1.10.0_mingw/include
 
 
 win32: LIBS += -L$$PWD/../Builds/shade-framework-build/ -llibshade-framework
-
-INCLUDEPATH += $$PWD/../Builds/shade-framework-build
-DEPENDPATH += $$PWD/../Builds/shade-framework-build

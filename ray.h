@@ -1,20 +1,19 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "vec3.h"
-#include "point3.h"
+#include <glm/vec3.hpp>
 
 #include "material.h"
 
 class Ray
 {
 public:
-    Ray(Point3 origin, Vec3 direction);
-    Point3 origin_;
-    Vec3 direction_;
-    Vec3 collision_normal_;
+    Ray(glm::vec3 origin, glm::vec3 direction);
+    glm::vec3 origin_;
+    glm::vec3 direction_;
+    glm::vec3 collision_normal_;
     float collision_t_;
-    Point3 collision_point_;
+    glm::vec3 collision_point_;
     bool collided_;
     Material* mat_ptr_;
 };

@@ -7,8 +7,8 @@
 class Object
 {
 public:
-    Object(Point3 position);
-    Point3 position_;
+    Object(glm::vec3 position);
+    glm::vec3 position_;
     virtual void CheckRayCollision(Ray&);
 };
 
