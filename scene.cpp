@@ -2,18 +2,6 @@
 
 #include "../shade-framework/scene_loader.h"
 
-bool Triangle::CheckCollision(Ray &ray)
-{
-    float t = 0;
-    ray.collision_t_ = t;
-    ray.collision_point_ = ray.origin_ + (ray.direction_*t);
-    ray.collided_ = true;
-//    ray.collision_normal_ = ray.collision_point_ - this->position_;
-//    ray.collision_normal_.Normalize();
-    ray.mat_ptr_ = new Material();
-    return true;
-}
-
 Scene::Scene()
 {   
     Object *s1 = new Sphere(glm::vec3(1.0,0.0,-15.0),1.0f);
@@ -24,48 +12,28 @@ Scene::Scene()
 }
 
 Scene::Scene(std::string scene_path)
-{
-//    SceneLoader m;
-//    m.Load(scene_path);
-//    for(int i = 0; i < m.vertices_index_.size(); i+= 3)
-//    {
-//        Triangle *t = new Triangle();
-//        t->a.x_ = m.vertices_[m.vertices_index_[i]].x;
-//        t->a.y_ = m.vertices_[m.vertices_index_[i]].y;
-//        t->a.z_ = m.vertices_[m.vertices_index_[i]].z;
-
-//        t->b.x_ = m.vertices_[m.vertices_index_[i+1]].x;
-//        t->b.y_ = m.vertices_[m.vertices_index_[i+1]].y;
-//        t->b.z_ = m.vertices_[m.vertices_index_[i+1]].z;
-
-//        t->c.x_ = m.vertices_[m.vertices_index_[i+2]].x;
-//        t->c.y_ = m.vertices_[m.vertices_index_[i+2]].y;
-//        t->c.z_ = m.vertices_[m.vertices_index_[i+2]].z;
-
-//        glm::vec3 ba = t->b - t->a;
-//        glm::vec3 ca = t->c - t->a;
-//        t->normal = ba.Cross(ca);
-//        triangles_.push_back(t);
-//    }
-}
-
-void Scene::TestSphereCollision(Ray &ray)
-{
-    std::vector<Object*>::iterator it;
-    for(it = objects_.begin(); it != objects_.end(); it++){
-        (*it)->CheckRayCollision(ray);
+{    
+    SceneLoader m;
+    if(m.Load(scene_path) == 0){
+        //This is just a temporary loader...
+        Object *o = new Object(glm::vec3(0.0f,0.0f,0.0f));
+        o->mesh_.normals_ = m.normals_;
+        o->mesh_.normals_index_ = m.normals_index_;
+        o->mesh_.text_coords_ = m.text_coords_;
+        o->mesh_.text_coords_index_ = m.text_coords_index_;
+        o->mesh_.vertices_ = m.vertices_;
+        o->mesh_.vertices_index_ = m.vertices_index_;
+        std::vector<int> test; test.push_back(1); test.push_back(2);
+        //    o->material_ = m.materials_[0];
+        objects_.push_back(o);
     }
 }
 
-std::vector<Triangle*> Scene::CheckRayCollision(Ray &ray)
+void Scene::CheckRayCollision(Ray &ray)
 {
-    std::vector<Triangle*> collided_triangles;
-    for(std::vector<Triangle*>::iterator it = triangles_.begin();
-        it != triangles_.end();
-        it++){
-        if((*it)->CheckCollision(ray)){
-            collided_triangles.push_back(*it);
-        }
+    std::vector<Object*>::iterator it = objects_.begin();
+    for(; it != objects_.end(); it++){
+        Object* o = (*it);
+        o->CheckRayCollision(ray);
     }
-    return collided_triangles;
 }

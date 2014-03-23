@@ -14,7 +14,8 @@ SOURCES += \
     camera.cpp \
     light.cpp \
     ray_tracer_gui.cpp \
-    object.cpp
+    object.cpp \
+    mesh.cpp
 
 HEADERS += \   
     gl_widget.h \
@@ -26,7 +27,8 @@ HEADERS += \
     camera.h \
     light.h \
     ray_tracer_gui.h \
-    object.h
+    object.h \
+    mesh.h
 
 OTHER_FILES += \
     basic.frag \

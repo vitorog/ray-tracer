@@ -14,7 +14,7 @@ RayTracer::RayTracer()
       width_(640),
       height_(640),
       max_depth_(1)
-//      test_scene_("test.obj")
+      ,test_scene_("F:\\Development\\Repositories\\Personal\\Builds\\raytracer-windows-debug\\debug\\test.obj")
 {
 }
 
@@ -97,8 +97,7 @@ void RayTracer::CastRays()
 glm::vec3 RayTracer::CastRay(glm::vec3 origin, glm::vec3 direction, int depth)
 {
     Ray ray(origin,direction);
-//    test_scene_.CheckRayCollision(ray);
-    test_scene_.TestSphereCollision(ray);
+    test_scene_.CheckRayCollision(ray);
     if(ray.collided_){
 //        return glm::vec3(1.0f,0.0f,0.0f);
         glm::vec3 point_light_dir = glm::normalize(test_scene_.light_.position_ - ray.collision_point_);
@@ -124,6 +123,6 @@ glm::vec3 RayTracer::CastRay(glm::vec3 origin, glm::vec3 direction, int depth)
 bool RayTracer::CastShadowRay(glm::vec3 origin, glm::vec3 direction)
 {
      Ray ray(origin,direction);
-     test_scene_.TestSphereCollision(ray);
+     test_scene_.CheckRayCollision(ray);
      return ray.collided_;
 }
