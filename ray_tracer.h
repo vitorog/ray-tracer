@@ -23,6 +23,7 @@ private:
     int width_;
     int height_;
     int max_depth_;
+    glm::vec3 clear_color_;
 };
 
 #endif // RAY_TRACER_H

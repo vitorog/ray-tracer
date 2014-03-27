@@ -16,15 +16,14 @@ Scene::Scene(std::string scene_path)
     SceneLoader m;
     if(m.Load(scene_path) == 0){
         //This is just a temporary loader...
-        Object *o = new Object(glm::vec3(0.0f,0.0f,0.0f));
+        Object *o = new Object(glm::vec3(0.0f,0.0f,-10.0f));
         o->mesh_.normals_ = m.normals_;
         o->mesh_.normals_index_ = m.normals_index_;
         o->mesh_.text_coords_ = m.text_coords_;
         o->mesh_.text_coords_index_ = m.text_coords_index_;
         o->mesh_.vertices_ = m.vertices_;
         o->mesh_.vertices_index_ = m.vertices_index_;
-        std::vector<int> test; test.push_back(1); test.push_back(2);
-        //    o->material_ = m.materials_[0];
+        o->material_ = m.materials_[0];
         objects_.push_back(o);
     }
 }
