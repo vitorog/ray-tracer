@@ -11,7 +11,7 @@ RayTracerGUI::RayTracerGUI(QWidget *parent) :
 
     ray_tracer_.Initialize();
     ray_tracer_.CastRays();
-    ui_->gl_widget_frame->layout()->addWidget(ray_tracer_.gl_widget_);
+//    ui_->gl_widget_frame->layout()->addWidget(ray_tracer_.gl_widget_);
 }
 
 RayTracerGUI::~RayTracerGUI()

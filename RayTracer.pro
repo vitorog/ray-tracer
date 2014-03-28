@@ -8,27 +8,15 @@ SOURCES += \
     gl_widget.cpp \
     gl_renderer.cpp \
     ray_tracer.cpp \
-    ray.cpp \
-    scene.cpp \   
-    sphere.cpp \    
-    camera.cpp \
-    light.cpp \
-    ray_tracer_gui.cpp \
-    object.cpp \
-    mesh.cpp
+    ray.cpp \    
+    ray_tracer_gui.cpp \    
 
 HEADERS += \   
     gl_widget.h \
     gl_renderer.h \
     ray_tracer.h \
-    ray.h \
-    scene.h \    
-    sphere.h \    
-    camera.h \
-    light.h \
-    ray_tracer_gui.h \
-    object.h \
-    mesh.h
+    ray.h \    
+    ray_tracer_gui.h \    
 
 OTHER_FILES += \
     basic.frag \

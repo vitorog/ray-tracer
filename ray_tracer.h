@@ -5,7 +5,7 @@
 #include "gl_renderer.h"
 #include "gl_widget.h"
 
-#include "scene.h"
+class Scene;
 
 class RayTracer
 {
@@ -16,14 +16,15 @@ public:
     void CastRays();
     glm::vec3 CastRay(glm::vec3 origin, glm::vec3 direction, int depth);
     bool CastShadowRay(glm::vec3 origin, glm::vec3 direction);
-    GlWidget *gl_widget_;
-    Scene test_scene_;
+    void SetScene(Scene*);
 private:    
     GlRenderer *gl_renderer_;
+    GlWidget *gl_widget_;
     int width_;
     int height_;
     int max_depth_;
     glm::vec3 clear_color_;
+    Scene *current_scene_;
 };
 
 #endif // RAY_TRACER_H
