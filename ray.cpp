@@ -79,9 +79,7 @@ void Ray::CheckCollision(Object *o)
             collided_ = true;
             collision_point_ = origin_ + direction_*t;
             collision_normal_ = glm::normalize(u*n0 + v*n1 + t*n2);
+            mat_ptr_ = o->material_;
         }
-    }
-    if(collided_){
-       mat_ptr_ = o->material_;
-    }
+    }    
 }

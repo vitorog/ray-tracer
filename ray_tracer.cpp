@@ -122,6 +122,7 @@ glm::vec3 RayTracer::CastRay(glm::vec3 origin, glm::vec3 direction, int depth)
 bool RayTracer::CastShadowRay(glm::vec3 origin, glm::vec3 direction)
 {
     Ray ray(origin,direction);
+    ray.CheckCollision(current_scene_);
     return ray.collided_;
 }
 

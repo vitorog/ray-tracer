@@ -13,25 +13,26 @@ int main(int argc, char** argv)
 //    return app.exec();
 
     QApplication app(argc,argv);
+    setlocale(LC_NUMERIC,"C");
     RayTracer ray_tracer;
 
     OBJLoader ol;
-    std::vector<Object*> objs  = ol.Load("untitled2.obj");
+    std::vector<Object*> objs  = ol.Load("../cornell_box.obj");
     if(!objs.empty()){
         Scene *s = new Scene();
         for(int i = 0; i < objs.size(); i++){
             s->objects_.push_back(objs.at(i));
         }
-        Camera *c = new Camera(glm::vec3(0.0f,0.0f,20.0f),
+        Camera *c = new Camera(glm::vec3(0.0f,0.5f,25.0f),
                                glm::vec3(0.0f,0.0f,-1.0f),
                                glm::vec3(0.0f,1.0f,0.0f));
         Material m;
         m.ka_ = glm::vec3(0.3,0.3,0.3);
-        m.kd_ = glm::vec3(0.5,0.5,0.5);
+        m.kd_ = glm::vec3(1.0,1.0,1.0);
         m.ks_ = glm::vec3(0.8,0.8,0.8);
         m.ns_ = 1.0f;
         m.tr_ = 0.0f;
-        PointLight *l = new PointLight(glm::vec3(0.0f,0.0f,10.0f),m);
+        PointLight *l = new PointLight(glm::vec3(0.0f,1.0f,2.0f),m);
         s->light_ = l;
         s->camera_ = c;
         ray_tracer.SetScene(s);
