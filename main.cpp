@@ -16,12 +16,12 @@ int main(int argc, char** argv)
     RayTracer ray_tracer;
 
     OBJLoader ol;
-    Object* o  = ol.Load("test.obj");
-    Object* o2  = ol.Load("untitled.obj");
-    if(o != NULL){
+    std::vector<Object*> objs  = ol.Load("untitled2.obj");
+    if(!objs.empty()){
         Scene *s = new Scene();
-        s->objects_.push_back(o);
-        s->objects_.push_back(o2);
+        for(int i = 0; i < objs.size(); i++){
+            s->objects_.push_back(objs.at(i));
+        }
         Camera *c = new Camera(glm::vec3(0.0f,0.0f,20.0f),
                                glm::vec3(0.0f,0.0f,-1.0f),
                                glm::vec3(0.0f,1.0f,0.0f));
