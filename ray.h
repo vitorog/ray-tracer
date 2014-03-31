@@ -3,12 +3,17 @@
 
 #include <glm/vec3.hpp>
 
-#include "material.h"
+class Scene;
+class Object;
+class Material;
 
 class Ray
 {
 public:
     Ray(glm::vec3 origin, glm::vec3 direction);
+    void CheckCollision(Scene *s);
+
+    void CheckCollision(Object* o);
     glm::vec3 origin_;
     glm::vec3 direction_;
     glm::vec3 collision_normal_;
