@@ -10,6 +10,11 @@ SOURCES += \
     ray_tracer.cpp \
     ray.cpp \    
     ray_tracer_gui.cpp \    
+    primitive.cpp \
+    sphere.cpp \
+    ray_tracer_scene.cpp \
+    ray_tracer_object.cpp \
+    mesh_object.cpp
 
 HEADERS += \   
     gl_widget.h \
@@ -17,6 +22,11 @@ HEADERS += \
     ray_tracer.h \
     ray.h \    
     ray_tracer_gui.h \    
+    primitive.h \
+    sphere.h \
+    ray_tracer_scene.h \
+    ray_tracer_object.h \
+    mesh_object.h
 
 OTHER_FILES += \
     basic.frag \

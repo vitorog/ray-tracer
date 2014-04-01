@@ -1,27 +1,21 @@
 #include <QApplication>
 #include <iostream>
-#include <scene.h>
 #include <obj_loader.h>
 
 #include "ray_tracer.h"
+#include "ray_tracer_scene.h"
+#include "mesh_object.h"
+#include "sphere.h"
 
-int main(int argc, char** argv)
+RayTracerScene* CreateScene()
 {
-//    QApplication app(argc,argv);
-//    RayTracerGUI gui;
-//    gui.show();
-//    return app.exec();
-
-    QApplication app(argc,argv);
-    setlocale(LC_NUMERIC,"C");
-    RayTracer ray_tracer;
-
     OBJLoader ol;
     std::vector<Object*> objs  = ol.Load("../cornell_box.obj");
     if(!objs.empty()){
-        Scene *s = new Scene();
+        RayTracerScene *s = new RayTracerScene();
         for(int i = 0; i < objs.size(); i++){
-            s->objects_.push_back(objs.at(i));
+            MeshObject *ob = new MeshObject(objs.at(i));
+            s->objects_.push_back(ob);
         }
         Camera *c = new Camera(glm::vec3(0.0f,0.0f,3.0f),
                                glm::vec3(0.0f,0.0f,-1.0f),
@@ -33,8 +27,34 @@ int main(int argc, char** argv)
         PointLight *l = new PointLight(glm::vec3(0.0f,1.0f,3.0f),m);
         s->light_ = l;
         s->camera_ = c;
+
+
+
+        RayTracerObject* sphere = new Sphere(glm::vec3(0.0f,0.0f,0.0f),1.0f);
+        s->objects_.push_back(sphere);
+
+        return s;
+    }
+    return NULL;
+}
+
+
+int main(int argc, char** argv)
+{
+    //    QApplication app(argc,argv);
+    //    RayTracerGUI gui;
+    //    gui.show();
+    //    return app.exec();
+
+    QApplication app(argc,argv);
+    setlocale(LC_NUMERIC,"C");
+    RayTracer ray_tracer;
+    RayTracerScene *s = CreateScene();
+    if(s != NULL){
         ray_tracer.SetScene(s);
     }
+
+
     ray_tracer.Initialize();
     ray_tracer.CastRays();
     return app.exec();

@@ -95,7 +95,7 @@ void RayTracer::CastRays()
 glm::vec3 RayTracer::CastRay(glm::vec3 origin, glm::vec3 direction, int depth)
 {
     Ray ray(origin,direction);
-    ray.CheckCollision(current_scene_);
+    current_scene_->CheckCollision(ray);
     if(ray.collided_){
         glm::vec3 point_light_dir = glm::normalize(current_scene_->light_->position_ - ray.collision_point_);
         bool shadow = CastShadowRay(ray.collision_point_,point_light_dir);
@@ -124,11 +124,11 @@ glm::vec3 RayTracer::CastRay(glm::vec3 origin, glm::vec3 direction, int depth)
 bool RayTracer::CastShadowRay(glm::vec3 origin, glm::vec3 direction)
 {
     Ray ray(origin,direction);
-    ray.CheckCollision(current_scene_);
+    current_scene_->CheckCollision(ray);
     return ray.collided_;
 }
 
-void RayTracer::SetScene(Scene *s)
+void RayTracer::SetScene(RayTracerScene *s)
 {
     current_scene_ = s;
 }
