@@ -6,6 +6,7 @@
 #include "ray_tracer_scene.h"
 #include "mesh_object.h"
 #include "sphere.h"
+#include "plane.h"
 
 RayTracerScene* CreateScene()
 {
@@ -32,6 +33,10 @@ RayTracerScene* CreateScene()
 
         RayTracerObject* sphere = new Sphere(glm::vec3(0.0f,0.0f,0.0f),1.0f);
         s->objects_.push_back(sphere);
+
+//        RayTracerObject* plane = new Plane(glm::vec3(0.0f,0.0f,-10.0f),glm::vec3(0.0f,0.0f,-1.0f));
+//        plane->material_->ka_ = glm::vec3(0.0f,1.0f,0.0f);
+//        s->objects_.push_back(plane);
 
         return s;
     }

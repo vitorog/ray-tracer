@@ -14,7 +14,8 @@ SOURCES += \
     sphere.cpp \
     ray_tracer_scene.cpp \
     ray_tracer_object.cpp \
-    mesh_object.cpp
+    mesh_object.cpp \
+    plane.cpp
 
 HEADERS += \   
     gl_widget.h \
@@ -26,7 +27,8 @@ HEADERS += \
     sphere.h \
     ray_tracer_scene.h \
     ray_tracer_object.h \
-    mesh_object.h
+    mesh_object.h \
+    plane.h
 
 OTHER_FILES += \
     basic.frag \
