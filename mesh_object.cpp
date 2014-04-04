@@ -5,6 +5,7 @@
 MeshObject::MeshObject(Object* obj) :
     obj_(obj)
 {
+    this->material_ = obj->material_;
 }
 
 void MeshObject::CheckCollision(Ray &ray)
@@ -61,7 +62,7 @@ void MeshObject::CheckCollision(Ray &ray)
             ray.collided_ = true;
             ray.collision_point_ = ray.origin_ + ray.direction_*t;
             ray.collision_normal_ = glm::normalize(u*n0 + v*n1 + t*n2);
-            ray.mat_ptr_ = obj_->material_;
+            ray.collided_obj_ptr_ = this;
         }
     }
 

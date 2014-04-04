@@ -103,17 +103,17 @@ glm::vec3 RayTracer::CastRay(glm::vec3 origin, glm::vec3 direction, int depth)
             return glm::vec3(0.0f,0.0f,0.0f);
         }else{
             if(depth < max_depth_){
-                if(ray.mat_ptr_->illum_ == 2){
-                    return CalculatePhongLighting(ray,current_scene_->light_,current_scene_->camera_,ray.mat_ptr_);
-                }else if(ray.mat_ptr_->illum_ == 3){
+                if(ray.collided_obj_ptr_->material_->illum_ == 2){
+                    return CalculatePhongLighting(ray,current_scene_->light_,current_scene_->camera_,ray.collided_obj_ptr_->material_);
+                }else if(ray.collided_obj_ptr_->material_->illum_ == 3){
                     float c1 = (-1)*glm::dot(ray.collision_normal_,ray.direction_);
                     glm::vec3 reflected_ray_dir = ray.direction_ + (ray.collision_normal_ * c1 * 2.0f);
                     glm::vec3 reflected_ray_pos = ray.collision_point_;
-                    return CalculatePhongLighting(ray,current_scene_->light_,current_scene_->camera_,ray.mat_ptr_)
+                    return CalculatePhongLighting(ray,current_scene_->light_,current_scene_->camera_,ray.collided_obj_ptr_->material_)
                             + 0.5f*CastRay(reflected_ray_pos,reflected_ray_dir, depth + 1);
                 }
             }else{
-                return CalculatePhongLighting(ray,current_scene_->light_,current_scene_->camera_,ray.mat_ptr_);
+                return CalculatePhongLighting(ray,current_scene_->light_,current_scene_->camera_,ray.collided_obj_ptr_->material_);
             }
         }
     }else{
@@ -125,6 +125,12 @@ bool RayTracer::CastShadowRay(glm::vec3 origin, glm::vec3 direction)
 {
     Ray ray(origin,direction);
     current_scene_->CheckCollision(ray);
+    if(ray.collided_){
+        glm::vec3 viewer_vec = glm::normalize(current_scene_->camera_->position_ - ray.collision_point_);
+        if(glm::dot(viewer_vec, current_scene_->camera_->view_direction_) > 0){
+            ray.collided_ = false; //Collision point is behind the viewer
+        }
+    }
     return ray.collided_;
 }
 

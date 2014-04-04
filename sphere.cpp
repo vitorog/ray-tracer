@@ -47,7 +47,7 @@ void Sphere::CheckCollision(Ray& ray)
             ray.collision_point_ = ray.origin_ + (ray.direction_*t);
             ray.collided_ = true;
             ray.collision_normal_ = glm::normalize(ray.collision_point_ -  position_);
-            ray.mat_ptr_ =  material_;
+            ray.collided_obj_ptr_ =  this;
         }
     }
 }

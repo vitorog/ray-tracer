@@ -16,28 +16,41 @@ RayTracerScene* CreateScene()
         RayTracerScene *s = new RayTracerScene();
         for(int i = 0; i < objs.size(); i++){
             MeshObject *ob = new MeshObject(objs.at(i));
-            s->objects_.push_back(ob);
+//            s->objects_.push_back(ob);
         }
-        Camera *c = new Camera(glm::vec3(0.0f,0.0f,3.0f),
+        Camera *c = new Camera(glm::vec3(0.0f,0.0f,1.0f),
                                glm::vec3(0.0f,0.0f,-1.0f),
                                glm::vec3(0.0f,1.0f,0.0f));
         Material m;
         m.ka_ = glm::vec3(0.1,0.1,0.1);
         m.kd_ = glm::vec3(1.0,1.0,1.0);
         m.ks_ = glm::vec3(0.2,0.2,0.2);
-        PointLight *l = new PointLight(glm::vec3(0.0f,1.0f,3.0f),m);
+        PointLight *l = new PointLight(glm::vec3(0.0f,0.0f,2.0f),m);
         s->light_ = l;
         s->camera_ = c;
 
 
 
-        RayTracerObject* sphere = new Sphere(glm::vec3(0.0f,0.0f,0.0f),1.0f);
+        RayTracerObject* sphere = new Sphere(glm::vec3(0.0f,0.0f,-1.0f),0.5f);
         s->objects_.push_back(sphere);
 
-//        RayTracerObject* plane = new Plane(glm::vec3(0.0f,0.0f,-10.0f),glm::vec3(0.0f,0.0f,-1.0f));
-//        plane->material_->ka_ = glm::vec3(0.0f,1.0f,0.0f);
-//        s->objects_.push_back(plane);
 
+        RayTracerObject* ground = new Plane(glm::vec3(0.0f,-2.0f,0.0f),glm::vec3(0.0f,1.0f,0.0f));
+        RayTracerObject* ceil = new Plane(glm::vec3(0.0f,2.0f,0.0f),glm::vec3(0.0f,-1.0f,0.0f));
+        RayTracerObject* left_wall = new Plane(glm::vec3(-2.0f,0.0f,0.0f),glm::vec3(1.0f,0.0f,0.0f));
+        RayTracerObject* right_wall = new Plane(glm::vec3(2.0f,0.0f,0.0f),glm::vec3(-1.0f,0.0f,0.0f));
+        RayTracerObject* back_wall = new Plane(glm::vec3(0.0f,0.0f,-2.0f),glm::vec3(0.0f,0.0f,1.0f));
+
+        left_wall->material_->kd_ = glm::vec3(0.2f,0.8f,0.2f);
+        left_wall->material_->illum_ = 3;
+        right_wall->material_->kd_ = glm::vec3(0.8f,0.2f,0.2f);
+
+
+        s->objects_.push_back(ground);
+        s->objects_.push_back(ceil);
+        s->objects_.push_back(left_wall);
+        s->objects_.push_back(right_wall);
+        s->objects_.push_back(back_wall);
         return s;
     }
     return NULL;

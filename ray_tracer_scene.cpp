@@ -9,6 +9,9 @@ void RayTracerScene::CheckCollision(Ray &ray)
     std::vector<RayTracerObject*>::iterator it = objects_.begin();
     for(; it != objects_.end(); it++)
     {
-       (*it)->CheckCollision(ray);
+        if(ray.collided_obj_ptr_ != NULL && ray.collided_obj_ptr_ == (*it)){
+            continue;
+        }
+        (*it)->CheckCollision(ray);
     }
 }

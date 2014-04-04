@@ -3,7 +3,7 @@
 
 #include <glm/vec3.hpp>
 
-class Material;
+class RayTracerObject;
 
 class Ray
 {
@@ -15,7 +15,7 @@ public:
     float collision_t_;
     glm::vec3 collision_point_;
     bool collided_;
-    Material* mat_ptr_;
+    RayTracerObject* collided_obj_ptr_;
 };
 
 #endif // RAY_H
