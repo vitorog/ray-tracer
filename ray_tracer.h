@@ -15,7 +15,7 @@ public:
     void Initialize();
     void CastRays();
     glm::vec3 CastRay(glm::vec3 origin, glm::vec3 direction, int depth);
-    bool CastShadowRay(glm::vec3 origin, glm::vec3 direction);
+    float CastShadowRay(glm::vec3 origin, glm::vec3 direction);
     void SetScene(RayTracerScene*);
 private:    
     GlRenderer *gl_renderer_;

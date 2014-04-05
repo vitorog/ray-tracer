@@ -10,9 +10,9 @@ Sphere::Sphere(glm::vec3 center, float radius) :
     Material *m = new Material();
     this->material_ = m;
     m->illum_ = 2;
-    m->ka_ = glm::vec3(0.3f,0.3f,0.3f);
-    m->kd_ = glm::vec3(1.0f,0.3f,0.3f);
-    m->ks_ = glm::vec3(0.3f,0.3f,0.3f);
+    m->ka_ = glm::vec3(0.2f,0.2f,0.2f);
+    m->kd_ = glm::vec3(0.8f,0.8f,0.8f);
+    m->ks_ = glm::vec3(0.4f,0.4f,0.4f);
     m->ns_ = 64.0f;
     m->tr_ = 0.0f;
 }

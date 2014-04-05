@@ -31,11 +31,19 @@ RayTracerScene* CreateScene()
 
 
 
-        RayTracerObject* sphere = new Sphere(glm::vec3(0.0f,0.0f,-1.0f),0.5f);
-        s->objects_.push_back(sphere);
+        RayTracerObject* sphere = new Sphere(glm::vec3(-2.0f,0.0f,-2.0f),0.5f);
+        sphere->material_->illum_ = 3;
+        sphere->material_->kd_ = glm::vec3(0.0f,0.0f,1.0f);
+//        s->objects_.push_back(sphere);
+
+        RayTracerObject* sphere2 = new Sphere(glm::vec3(0.0f,0.0f,-1.0f),0.5f);
+        sphere2->material_->illum_ = 3;
+        s->objects_.push_back(sphere2);
 
 
         RayTracerObject* ground = new Plane(glm::vec3(0.0f,-2.0f,0.0f),glm::vec3(0.0f,1.0f,0.0f));
+//        ground->material_->kd_ = glm::vec3(0.2,0.8,0.2);
+
         RayTracerObject* ceil = new Plane(glm::vec3(0.0f,2.0f,0.0f),glm::vec3(0.0f,-1.0f,0.0f));
         RayTracerObject* left_wall = new Plane(glm::vec3(-2.0f,0.0f,0.0f),glm::vec3(1.0f,0.0f,0.0f));
         RayTracerObject* right_wall = new Plane(glm::vec3(2.0f,0.0f,0.0f),glm::vec3(-1.0f,0.0f,0.0f));
@@ -47,10 +55,10 @@ RayTracerScene* CreateScene()
 
 
         s->objects_.push_back(ground);
-        s->objects_.push_back(ceil);
-        s->objects_.push_back(left_wall);
-        s->objects_.push_back(right_wall);
-        s->objects_.push_back(back_wall);
+//        s->objects_.push_back(ceil);
+//        s->objects_.push_back(left_wall);
+//        s->objects_.push_back(right_wall);
+//        s->objects_.push_back(back_wall);
         return s;
     }
     return NULL;

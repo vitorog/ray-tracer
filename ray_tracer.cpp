@@ -12,7 +12,7 @@ RayTracer::RayTracer()
       width_(640),
       height_(640),
       max_depth_(2),
-      clear_color_(0.4,0.4,0.7),
+      clear_color_(0.2,0.2,0.2),
       current_scene_(NULL)
 {
 }
@@ -45,8 +45,6 @@ glm::vec3 CalculatePhongLighting(Ray& ray, PointLight* light, Camera* camera, Ma
     glm::vec3 ks_result = material->ks_
             * light->material_.ks_;
 
-    //TODO
-
     glm::vec3 light_dir = glm::normalize(light->position_ - ray.collision_point_);
 
     float NdotL = std::max(glm::dot(ray.collision_normal_,light_dir),0.0f);
@@ -68,18 +66,17 @@ glm::vec3 CalculatePhongLighting(Ray& ray, PointLight* light, Camera* camera, Ma
 
 void RayTracer::CastRays()
 {    
-
     GLubyte rgba_texture[height_][width_][4];
     int depth = 1;
     for(int y=0;y<height_;y++){
         for(int x=0;x<width_;x++){
-            glm::vec3 final_color;
+            glm::vec3 final_color = glm::vec3(0.0f,0.0f,0.0f);
             if(current_scene_ != NULL){
                 int y_coord = int(y - (height_ / 2.0f));
                 int x_coord = int(x - (width_ / 2.0f));
                 glm::vec3 screen_point = current_scene_->camera_->GetScreenPlanePoint(x_coord,y_coord);
                 glm::vec3 ray_direction = glm::normalize(screen_point - current_scene_->camera_->position_);
-                final_color = CastRay(current_scene_->camera_->position_,ray_direction, depth);
+                final_color += CastRay(current_scene_->camera_->position_,ray_direction, depth);
             }else{
                 final_color = clear_color_;
             }
@@ -98,30 +95,33 @@ glm::vec3 RayTracer::CastRay(glm::vec3 origin, glm::vec3 direction, int depth)
     current_scene_->CheckCollision(ray);
     if(ray.collided_){
         glm::vec3 point_light_dir = glm::normalize(current_scene_->light_->position_ - ray.collision_point_);
-        bool shadow = CastShadowRay(ray.collision_point_,point_light_dir);
-        if(shadow){
-            return glm::vec3(0.0f,0.0f,0.0f);
-        }else{
-            if(depth < max_depth_){
-                if(ray.collided_obj_ptr_->material_->illum_ == 2){
-                    return CalculatePhongLighting(ray,current_scene_->light_,current_scene_->camera_,ray.collided_obj_ptr_->material_);
-                }else if(ray.collided_obj_ptr_->material_->illum_ == 3){
-                    float c1 = (-1)*glm::dot(ray.collision_normal_,ray.direction_);
-                    glm::vec3 reflected_ray_dir = ray.direction_ + (ray.collision_normal_ * c1 * 2.0f);
-                    glm::vec3 reflected_ray_pos = ray.collision_point_;
-                    return CalculatePhongLighting(ray,current_scene_->light_,current_scene_->camera_,ray.collided_obj_ptr_->material_)
-                            + 0.5f*CastRay(reflected_ray_pos,reflected_ray_dir, depth + 1);
-                }
-            }else{
+        glm::vec3 color = CalculatePhongLighting(ray,current_scene_->light_,current_scene_->camera_,ray.collided_obj_ptr_->material_)
+                * CastShadowRay(ray.collision_point_,point_light_dir);
+        if(depth < max_depth_){
+            if(ray.collided_obj_ptr_->material_->illum_ == 2){
                 return CalculatePhongLighting(ray,current_scene_->light_,current_scene_->camera_,ray.collided_obj_ptr_->material_);
+            }else if(ray.collided_obj_ptr_->material_->illum_ == 3){
+                glm::vec3 reflected_ray_dir = glm::normalize(ray.direction_
+                                                             - (2.0f * glm::dot (ray.collision_normal_, ray.direction_)
+                                                                * ray.collision_normal_));
+                glm::vec3 reflected_ray_pos = ray.collision_point_;
+                color += CastRay(reflected_ray_pos,reflected_ray_dir, depth + 1);
             }
         }
+        color.x = std::max(std::min(color.x , 1.0f),0.0f);
+        color.y = std::max(std::min(color.y , 1.0f),0.0f);
+        color.z = std::max(std::min(color.z , 1.0f),0.0f);
+        return color;
     }else{
-        return clear_color_;
+        if(depth == 1){
+            return clear_color_;
+        }else{
+            return glm::vec3(0.0f,0.0f,0.0f);
+        }
     }
 }
 
-bool RayTracer::CastShadowRay(glm::vec3 origin, glm::vec3 direction)
+float RayTracer::CastShadowRay(glm::vec3 origin, glm::vec3 direction)
 {
     Ray ray(origin,direction);
     current_scene_->CheckCollision(ray);
@@ -131,7 +131,11 @@ bool RayTracer::CastShadowRay(glm::vec3 origin, glm::vec3 direction)
             ray.collided_ = false; //Collision point is behind the viewer
         }
     }
-    return ray.collided_;
+    if(ray.collided_){
+        return 0.0f;
+    }else{
+        return 1.0f;
+    }
 }
 
 void RayTracer::SetScene(RayTracerScene *s)
