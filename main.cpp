@@ -31,12 +31,13 @@ RayTracerScene* CreateScene()
 
 
 
-        RayTracerObject* sphere = new Sphere(glm::vec3(-2.0f,0.0f,-2.0f),0.5f);
-        sphere->material_->illum_ = 3;
-        sphere->material_->kd_ = glm::vec3(0.0f,0.0f,1.0f);
+//        RayTracerObject* sphere = new Sphere(glm::vec3(-1.0f,0.0f,-0.5f),0.5f);
+//        sphere->material_->illum_ = 3;
+//        sphere->material_->kd_ = glm::vec3(0.0f,0.0f,1.0f);
 //        s->objects_.push_back(sphere);
 
         RayTracerObject* sphere2 = new Sphere(glm::vec3(0.0f,0.0f,-1.0f),0.5f);
+        sphere2->material_->kd_ = glm::vec3(0.8f,0.1f,0.1f);
         sphere2->material_->illum_ = 3;
         s->objects_.push_back(sphere2);
 
