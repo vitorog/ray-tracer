@@ -11,7 +11,7 @@ RayTracer::RayTracer()
       gl_renderer_(NULL),
       width_(640),
       height_(640),
-      max_depth_(3),
+      max_depth_(2),
       clear_color_(0.2,0.2,0.2),
       current_scene_(NULL)
 {

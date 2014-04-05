@@ -25,7 +25,7 @@ RayTracerScene* CreateScene()
         m.ka_ = glm::vec3(0.1,0.1,0.1);
         m.kd_ = glm::vec3(1.0,1.0,1.0);
         m.ks_ = glm::vec3(0.2,0.2,0.2);
-        PointLight *l = new PointLight(glm::vec3(0.0f,0.0f,2.0f),m);
+        PointLight *l = new PointLight(glm::vec3(1.0f,1.0f,2.0f),m);
         s->light_ = l;
         s->camera_ = c;
 
