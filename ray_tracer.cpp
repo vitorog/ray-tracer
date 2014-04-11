@@ -87,6 +87,7 @@ void RayTracer::CastRays()
         }
     }
     gl_renderer_->SetTexture(&rgba_texture[0][0][0]);
+    gl_widget_->update();
 }
 
 glm::vec3 RayTracer::CastRay(glm::vec3 origin, glm::vec3 direction, int depth)
@@ -137,4 +138,9 @@ float RayTracer::CastShadowRay(glm::vec3 origin, glm::vec3 direction)
 void RayTracer::SetScene(RayTracerScene *s)
 {
     current_scene_ = s;
+}
+
+GlWidget *RayTracer::GetWidget()
+{
+    return gl_widget_;
 }

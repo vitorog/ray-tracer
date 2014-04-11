@@ -2,6 +2,7 @@
 #include <iostream>
 #include <obj_loader.h>
 
+#include "ray_tracer_gui.h"
 #include "ray_tracer.h"
 #include "ray_tracer_scene.h"
 #include "mesh_object.h"
@@ -16,7 +17,7 @@ RayTracerScene* CreateScene()
         RayTracerScene *s = new RayTracerScene();
         for(int i = 0; i < objs.size(); i++){
             MeshObject *ob = new MeshObject(objs.at(i));
-//            s->objects_.push_back(ob);
+            //            s->objects_.push_back(ob);
         }
         Camera *c = new Camera(glm::vec3(0.0f,0.0f,1.0f),
                                glm::vec3(0.0f,0.0f,-1.0f),
@@ -31,10 +32,10 @@ RayTracerScene* CreateScene()
 
 
 
-//        RayTracerObject* sphere = new Sphere(glm::vec3(-1.0f,0.0f,-0.5f),0.5f);
-//        sphere->material_->illum_ = 3;
-//        sphere->material_->kd_ = glm::vec3(0.0f,0.0f,1.0f);
-//        s->objects_.push_back(sphere);
+        //        RayTracerObject* sphere = new Sphere(glm::vec3(-1.0f,0.0f,-0.5f),0.5f);
+        //        sphere->material_->illum_ = 3;
+        //        sphere->material_->kd_ = glm::vec3(0.0f,0.0f,1.0f);
+        //        s->objects_.push_back(sphere);
 
         RayTracerObject* sphere2 = new Sphere(glm::vec3(0.0f,0.0f,-1.0f),0.5f);
         sphere2->material_->kd_ = glm::vec3(0.8f,0.1f,0.1f);
@@ -43,7 +44,7 @@ RayTracerScene* CreateScene()
 
 
         RayTracerObject* ground = new Plane(glm::vec3(0.0f,-2.0f,0.0f),glm::vec3(0.0f,1.0f,0.0f));
-//        ground->material_->kd_ = glm::vec3(0.2,0.8,0.2);
+        //        ground->material_->kd_ = glm::vec3(0.2,0.8,0.2);
 
         RayTracerObject* ceil = new Plane(glm::vec3(0.0f,2.0f,0.0f),glm::vec3(0.0f,-1.0f,0.0f));
         RayTracerObject* left_wall = new Plane(glm::vec3(-2.0f,0.0f,0.0f),glm::vec3(1.0f,0.0f,0.0f));
@@ -56,10 +57,10 @@ RayTracerScene* CreateScene()
 
 
         s->objects_.push_back(ground);
-//        s->objects_.push_back(ceil);
-//        s->objects_.push_back(left_wall);
-//        s->objects_.push_back(right_wall);
-//        s->objects_.push_back(back_wall);
+        //        s->objects_.push_back(ceil);
+        //        s->objects_.push_back(left_wall);
+        //        s->objects_.push_back(right_wall);
+        //        s->objects_.push_back(back_wall);
         return s;
     }
     return NULL;
@@ -68,21 +69,21 @@ RayTracerScene* CreateScene()
 
 int main(int argc, char** argv)
 {
-    //    QApplication app(argc,argv);
-    //    RayTracerGUI gui;
-    //    gui.show();
-    //    return app.exec();
-
     QApplication app(argc,argv);
-    setlocale(LC_NUMERIC,"C");
-    RayTracer ray_tracer;
-    RayTracerScene *s = CreateScene();
-    if(s != NULL){
-        ray_tracer.SetScene(s);
-    }
-
-
-    ray_tracer.Initialize();
-    ray_tracer.CastRays();
+    RayTracerGUI gui;
+    gui.show();
     return app.exec();
+
+    //    QApplication app(argc,argv);
+    //    setlocale(LC_NUMERIC,"C");
+    //    RayTracer ray_tracer;
+    //    RayTracerScene *s = CreateScene();
+    //    if(s != NULL){
+    //        ray_tracer.SetScene(s);
+    //    }
+
+
+    //    ray_tracer.Initialize();
+    //    ray_tracer.CastRays();
+    //    return app.exec();
 }

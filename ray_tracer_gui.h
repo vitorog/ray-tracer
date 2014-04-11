@@ -5,18 +5,24 @@
 
 #include "ray_tracer.h"
 
+
 namespace Ui {
 class RayTracerGUI;
 }
 
 class RayTracerGUI : public QMainWindow
 {
-    Q_OBJECT    
+    Q_OBJECT
 public:
     explicit RayTracerGUI(QWidget *parent = 0);
-    ~RayTracerGUI();    
-private:
+    ~RayTracerGUI();
+private slots:
+    void AddSphere();
+    void AddPlane();
+private:    
+    void Update();
     RayTracer ray_tracer_;
+    RayTracerScene* scene_;
     Ui::RayTracerGUI *ui_;
 };
 

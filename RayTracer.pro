@@ -15,7 +15,8 @@ SOURCES += \
     ray_tracer_scene.cpp \
     ray_tracer_object.cpp \
     mesh_object.cpp \
-    plane.cpp
+    plane.cpp \
+    material_widget.cpp
 
 HEADERS += \   
     gl_widget.h \
@@ -28,14 +29,16 @@ HEADERS += \
     ray_tracer_scene.h \
     ray_tracer_object.h \
     mesh_object.h \
-    plane.h
+    plane.h \
+    material_widget.h
 
 OTHER_FILES += \
     basic.frag \
     basic.vert
 
 FORMS += \
-    ray_tracer_gui.ui
+    ray_tracer_gui.ui \
+    material_widget.ui
 
 
 unix:!macx: LIBS += -L$$PWD/../Builds/shade-framework-build/ -lshade-framework
